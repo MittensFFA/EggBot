@@ -1,0 +1,2 @@
+# EggBot
+eggnitiative automation
