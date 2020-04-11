@@ -1,0 +1,55 @@
+#D&D Actions Bot
+
+import os
+import nest_asyncio
+nest_asyncio.apply()
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
+load_dotenv()
+token = os.getenv('DISCORD_TOKEN')
+
+client = discord.Client()
+
+#command prefix
+bot = commands.Bot(command_prefix='.')
+
+#ID's 
+#Mittens ---- 316567558117392384
+#Ghostleaf -- 471164160718143488
+#Kormac ----- 275909403167686656
+#Methiken --- 444459833236914176
+#Rock ------- 277948601810812929
+#Shay ------- 
+#Toaster ---- 
+
+
+#Initial dictionary
+dict = {316567558117392384: {'Char': 'Benevolent DM', 'Action': 'testing'},
+        277948601810812929: {'Char': 'Rock', 'Action': 'rock warhammer smash'},
+        275909403167686656: {'Char': 'Kormac', 'Action': 'kormac grapple'},
+        444459833236914176: {'Char': 'Methiken', 'Action': 'death save'},
+        471164160718143488: {'Char': 'Ghostleaf', 'Action': 'stealth'}}
+
+embed=discord.Embed(title="-=[ ACTION #XXX ]=-")
+
+#General confirmaion event to verify the bot is live                     
+@bot.event
+async def on_ready():
+    print(f'{bot.user} has connected to Discord!')
+    
+    
+#Returns member ID's. Will use these to confirm the location actions should exist    
+@bot.command()
+async def userinfo(ctx, member: discord.Member):
+    print(member.id)    
+        
+#action submission command.  Adds the action posted into the dictionary and adds it to the embed     
+@bot.command()
+async def action(ctx, *, arg):
+    id = (ctx.message.author.id)  
+    dict[id]['Action'] = arg               
+    embed.add_field(name=dict[id]['Char'], value=dict[id]['Action'])
+    await ctx.send(embed=embed)
+
+bot.run(token)   
